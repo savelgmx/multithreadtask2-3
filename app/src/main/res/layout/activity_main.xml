@@ -15,17 +15,16 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/TextView"
+        android:id="@+id/loadTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="TextView" />
+        android:layout_weight="1" />
 
     <Button
-        android:id="@+id/Button"
+        android:id="@+id/startLoadingBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Button" />
+        android:text="start loading" />
 
 </LinearLayout>
