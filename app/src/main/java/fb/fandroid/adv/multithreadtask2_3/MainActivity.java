@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private TextView mResultTxt;
     private Bundle mBundle;
     public static final int LOADER_RANDOM_ID = 1;
-    private Loader<String> mLoader = getSupportLoaderManager().initLoader(LOADER_RANDOM_ID, mBundle, this);
+    private Loader<String> mLoader;
 
     ProgressBar progressBar;
     Button startLoadingBtn;
@@ -65,25 +65,34 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         startLoadingBtn=(Button)findViewById(R.id.startLoadingBtn);
         loadTextView=(TextView)findViewById(R.id.loadTextView);
 
-
-
+        Bundle bundle = new Bundle();
+        bundle.putString(RandomLoader.ARG_WORD, "test");
+        // Инициализируем загрузчик с идентификатором
+        // Если загрузчик не существует, то он будет создан,
+        // иначе он будет перезапущен.
+        mLoader = getSupportLoaderManager().initLoader(LOADER_RANDOM_ID, bundle, this);
 
         startLoadingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 progressBar.setVisibility(View.VISIBLE);
                 showToast("Loading...");
-                loadTextView.setText("Loading ...");
+                Log.d(LOG_TAG, "startLoad");
 
-                //******************
-                mBundle = new Bundle();
-                mBundle.putString(RandomLoader.ARG_WORD, "test");
-                //*********************
+                //Щелчок кнопки выполняет роль триггера для запуска новой загрузки данных.
+                // Мы используем метод onContentChanged(), чтобы сигнализировать загрузчику об изменении данных.
 
+                mLoader.onContentChanged();
             }
         });
-   }
+    }
 
+    // Будет вызван, если до этого не существовал
+    // Это значит, что при повороте не будет вызываться
+    // так как предыдущий загрузчик с данным ID уже был создан ранее
+    // Будет также вызван при рестарте через метод LoaderManager.restartLoader()
+            @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
         Loader<String> mLoader = null;
         // условие можно убрать, если вы используете только один загрузчик
@@ -94,11 +103,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return mLoader;
     }
 
+    // Вызовется, когда загрузчик закончит свою работу. Вызывается в основном потоке
+    // Может вызываться несколько раз при изменении данных
+    // Также вызывается при поворотах
+    @Override
     public void onLoadFinished(Loader<String> loader, String data) {
         Log.d(LOG_TAG, "onLoadFinished");
-        mResultTxt.setText(data);
+//        mResultTxt.setText(data);
+        showToast(data);
     }
 
+    // Вызовется при уничтожении активности
+    @Override
     public void onLoaderReset(Loader<String> loader) {
         Log.d(LOG_TAG, "onLoaderReset");
     }

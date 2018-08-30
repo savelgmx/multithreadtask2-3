@@ -75,7 +75,7 @@ deliverResult() — получает и возвращает итоговый р
     @Override
     public void deliverResult(String data) {
         Log.d(LOG_TAG, "deliverResult");
-        super.deliverResult(data);
+       super.deliverResult(data);
     }
 
 
