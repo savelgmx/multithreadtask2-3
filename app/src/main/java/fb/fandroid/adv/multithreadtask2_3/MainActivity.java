@@ -51,11 +51,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private int progressStatus=0;
 
 
-    private void showToast(String toast){
-        Toast.makeText(this,toast,Toast.LENGTH_SHORT);
-    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,8 +72,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public void onClick(View v) {
 
                 progressBar.setVisibility(View.VISIBLE);
-                showToast("Loading...");
+
+                loadTextView.setText("Loading...");
+
                 Log.d(LOG_TAG, "startLoad");
+                startLoadingBtn.setEnabled(false);
 
                 //Щелчок кнопки выполняет роль триггера для запуска новой загрузки данных.
                 // Мы используем метод onContentChanged(), чтобы сигнализировать загрузчику об изменении данных.
@@ -109,8 +107,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
         Log.d(LOG_TAG, "onLoadFinished");
-//        mResultTxt.setText(data);
-        showToast(data);
+        loadTextView.setText(data);
+        startLoadingBtn.setEnabled(true); //т.к. загрузка закончена то можно начать повторную
+        progressBar.setVisibility(View.INVISIBLE);//и спрятать прогресс бар
+
     }
 
     // Вызовется при уничтожении активности

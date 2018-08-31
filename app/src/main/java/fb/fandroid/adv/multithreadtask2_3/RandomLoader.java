@@ -81,30 +81,23 @@ deliverResult() — получает и возвращает итоговый р
 
     private String generateString(String characters)
     {
-     /*   Random rand = new Random();
-        char[] text = new char[RANDOM_STRING_LENGTH];
-        for (int i = 0; i < RANDOM_STRING_LENGTH; i++) {
-            text[i] = characters.charAt(rand.nextInt(characters.length()));
-        }
-        return new String(text);*/
 
-        // Генерируем случайное число от 0 до 10
-        Random rand = new Random();
-        int randNumber = rand.nextInt(11);
+        int delayTask=5000;//сначала задержим загрузку на 5000 мс.
 
-        // Заставим задачу выполняться достаточно долго для того
-        //чтобы успеть повернуть телефон во время ее выполнения
-           int delayTask = randNumber * 200;
-
-        // Sleep на случайный промежуток времени
         try {
-            Thread.sleep(delayTask);
+            Thread.sleep(delayTask);// Sleep на промежуток времени 5sec.
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        // Return a String result
-        return "Awake at last after sleeping for " + delayTask + " milliseconds!";
-    }
+        Log.d(LOG_TAG,"Awake at last after sleeping for " + delayTask + " milliseconds!");
+        Random rand = new Random();
+        char[] text = new char[RANDOM_STRING_LENGTH];
+        for (int i = 0; i < RANDOM_STRING_LENGTH; i++) {
+            text[i] = characters.charAt(rand.nextInt(characters.length()));
+        }
+        return new String(text);// Return a String result
+
+     }
 
 }
